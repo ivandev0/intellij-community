@@ -4,6 +4,7 @@ package org.jetbrains.intellij.build
 import org.jetbrains.annotations.ApiStatus
 import org.jetbrains.intellij.build.impl.TestingTasksImpl
 import org.jetbrains.intellij.build.impl.coverage.Coverage
+import org.jetbrains.intellij.build.impl.tracerecorder.TraceRecorder
 import java.nio.file.Path
 
 interface TestingTasks {
@@ -72,4 +73,7 @@ interface TestingTasks {
 
   @get:ApiStatus.Internal
   val coverage: Coverage
+
+  @get:ApiStatus.Internal
+  val traceRecorder: TraceRecorder
 }

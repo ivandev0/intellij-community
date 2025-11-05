@@ -36,6 +36,8 @@ import org.jetbrains.intellij.build.causal.CausalProfilingOptions
 import org.jetbrains.intellij.build.dependencies.TeamCityHelper
 import org.jetbrains.intellij.build.impl.coverage.Coverage
 import org.jetbrains.intellij.build.impl.coverage.CoverageImpl
+import org.jetbrains.intellij.build.impl.tracerecorder.TraceRecorder
+import org.jetbrains.intellij.build.impl.tracerecorder.TraceRecorderImpl
 import org.jetbrains.intellij.build.io.ZipEntryProcessorResult
 import org.jetbrains.intellij.build.io.readZipFile
 import org.jetbrains.intellij.build.io.runProcess
@@ -86,6 +88,10 @@ internal class TestingTasksImpl(context: CompilationContext, private val options
         "Test coverage is enabled but the classes pattern is not specified"
       }.splitToSequence(';').map(::Regex).toList(),
     )
+  }
+
+  override val traceRecorder: TraceRecorder by lazy {
+    TraceRecorderImpl(context = this.context, options = options)
   }
 
   private fun loadRunConfigurations(name: String): List<JUnitRunConfigurationProperties> {
@@ -235,6 +241,9 @@ internal class TestingTasksImpl(context: CompilationContext, private val options
       if (options.enableCoverage) {
         coverage.enable(jvmOptions = effectiveAdditionalJvmOptions, systemProperties = systemProperties)
       }
+      if (options.isTraceRecorderEnabled) {
+        traceRecorder.enable(effectiveAdditionalJvmOptions)
+      }
       if (runConfigurations.none()) {
         runTestsFromGroupsAndPatterns(
           additionalJvmOptions = effectiveAdditionalJvmOptions,
@@ -253,6 +262,9 @@ internal class TestingTasksImpl(context: CompilationContext, private val options
       }
       if (options.enableCoverage) {
         coverage.generateReport()
+      }
+      if (options.isTraceRecorderEnabled) {
+        traceRecorder.publishTraceDump()
       }
     }
   }

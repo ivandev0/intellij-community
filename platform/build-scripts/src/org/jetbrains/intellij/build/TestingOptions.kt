@@ -163,6 +163,31 @@ open class TestingOptions {
   var isPerformanceTestsOnly: Boolean = getBooleanProperty(PERFORMANCE_TESTS_ONLY_FLAG, false)
 
   /**
+   * Enables recording execution trace with Trace Recorder java agent.
+   */
+  var isTraceRecorderEnabled: Boolean = getBooleanProperty("intellij.build.test.trace.recorder.enabled", false)
+
+  /**
+   * Fully qualified class name whose method execution should be traced by Trace Recorder.
+   */
+  var traceRecorderClassName: String? = System.getProperty("intellij.build.test.trace.recorder.className")
+
+  /**
+   * Method name to trace by Trace Recorder.
+   */
+  var traceRecorderMethodName: String? = System.getProperty("intellij.build.test.trace.recorder.methodName")
+
+  /**
+   * Path to the file where Trace Recorder should dump the execution trace.
+   */
+  var traceRecorderDumpFilePath: String? = System.getProperty("intellij.build.test.trace.recorder.traceDump")
+
+  /**
+   * Path to the .jar file with the Trace Recorder javaagent.
+   */
+  var traceRecorderAgentJarPath: String? = System.getProperty("intellij.build.test.trace.recorder.agentJar")
+
+  /**
    * When running on TeamCity and this option is true, cancel the build (instead of failing it) in case
    * the build problem occurred while preparing for the test run, for example, if we failed to download
    * the compilation cache for some reason.
