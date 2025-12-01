@@ -39,8 +39,11 @@ internal class TraceRecorderImpl(
     val dumpFile = requireNotNull(options.traceRecorderDumpFilePath) {
       "No trace dump file provided for trace recording (intellij.build.test.trace.recorder.traceDump)"
     }
+    
+    val format = options.traceRecorderFormat ?: "text"
+    val formatOption = options.traceRecorderFormatOption ?: "verbose"
 
-    val params = "class=$className,method=$methodName,output=$dumpFile,format=text,formatOption=verbose"
+    val params = "class=$className,method=$methodName,output=$dumpFile,format=$format,formatOption=$formatOption"
     jvmOptions += "-javaagent:$agentJar=${params}"
     jvmOptions += "-Dlincheck.traceRecorderMode=true"
   }

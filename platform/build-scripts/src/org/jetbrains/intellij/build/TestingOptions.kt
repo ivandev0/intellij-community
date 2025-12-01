@@ -188,6 +188,23 @@ open class TestingOptions {
   var traceRecorderAgentJarPath: String? = System.getProperty("intellij.build.test.trace.recorder.agentJar")
 
   /**
+   * Output format for trace recorder dumps. Possible options are:
+   *  * `binary` --- serialized binary format;
+   *  * `text` --- text output;
+   *  * `null` --- discards recorded trace.
+   */
+  var traceRecorderFormat: String? = System.getProperty("intellij.build.test.trace.recorder.format")
+
+  /**
+   * extra options for the selected format. Possible options are:
+   *  * for `binary`:
+   *    * `dump` --- keeps the whole trace in-memory and dumps it to the file at the end;
+   *    * `stream` --- writes the trace points incrementally during the execution;
+   *  * for `text`: `verbose` --- enables verbose output.
+   */
+  var traceRecorderFormatOption: String? = System.getProperty("intellij.build.test.trace.recorder.formatOption")
+
+  /**
    * When running on TeamCity and this option is true, cancel the build (instead of failing it) in case
    * the build problem occurred while preparing for the test run, for example, if we failed to download
    * the compilation cache for some reason.
